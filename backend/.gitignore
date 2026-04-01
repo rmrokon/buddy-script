@@ -131,5 +131,5 @@ dist
 
 prompt.txt
 .DS_Store
-development-guideline.txt
+# development-guideline.txt
 DockerfileProd

@@ -2,6 +2,8 @@ import { CreationOptional, DataTypes, HasManyAddAssociationMixin, HasManyGetAsso
 import { sequelize } from '../../../loaders/datasource';
 import Credential from '../credentials/model';
 import Post from '../posts/model';
+import Comment from '../comments/model';
+import Reaction from '../reactions/model';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>;
@@ -12,6 +14,8 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare updatedAt: CreationOptional<Date>;
   declare getCredential: HasOneGetAssociationMixin<Credential>;
   declare getPosts: HasManyGetAssociationsMixin<Post>;
+  declare getComments: HasManyGetAssociationsMixin<Comment>;
+  declare getReactions: HasManyGetAssociationsMixin<Reaction>;
 }
 
 User.init(

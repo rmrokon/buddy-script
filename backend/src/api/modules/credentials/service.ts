@@ -56,14 +56,14 @@ export default class CredentialService implements ICredentialService {
       { user: args.payload.user },
       process.env.JWT_SECRET! + args.secret,
       {
-        expiresIn: 86400 // 1 day
+        expiresIn: 604800 // 7 days
       }
     );
     const refreshToken = jwt.sign(
       { user: args.payload.user },
       process.env.JWT_SECRET! + args.secret,
       {
-        expiresIn: 604800 // 7 days
+        expiresIn: 2592000 // 30 days
       }
     );
     return { accessToken, refreshToken };
