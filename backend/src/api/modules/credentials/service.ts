@@ -55,10 +55,16 @@ export default class CredentialService implements ICredentialService {
     const accessToken = jwt.sign(
       { user: args.payload.user },
       process.env.JWT_SECRET! + args.secret,
+      {
+        expiresIn: 86400 // 1 day
+      }
     );
     const refreshToken = jwt.sign(
       { user: args.payload.user },
       process.env.JWT_SECRET! + args.secret,
+      {
+        expiresIn: 604800 // 7 days
+      }
     );
     return { accessToken, refreshToken };
   }

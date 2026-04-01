@@ -14,10 +14,12 @@ export const UserRouter = Router();
 
 /**
  * @swagger
- * /users:
+ * /v1/users:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -31,6 +33,10 @@ export const UserRouter = Router();
  *             properties:
  *               email:
  *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
+ *                 type: string
  *     responses:
  *       201:
  *         description: User created successfully
@@ -43,11 +49,11 @@ export const UserRouter = Router();
  */
 UserRouter.route('/')
   .post([validateRequestBody(UserBodyValidationSchema)], asyncCatchHandler(userController.createUser))
-  .get([], asyncCatchHandler(userController.getUsers));
+  .get([isAuthenticated], asyncCatchHandler(userController.getUsers));
 
 /**
  * @swagger
- * /users/{userId}:
+ * /v1/users/{userId}:
  *   patch:
  *     summary: Update an existing user
  *     tags: [Users]

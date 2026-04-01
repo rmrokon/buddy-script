@@ -14,7 +14,7 @@ export const CredentialRouter = Router();
 
 /**
  * @swagger
- * /credentials:
+ * /v1/credentials:
  *   post:
  *     summary: Create a new credential
  *     tags: [Credentials]
@@ -27,10 +27,16 @@ export const CredentialRouter = Router();
  *             required:
  *               - email
  *               - password
+ *               - firstName
+ *               - lastName
  *             properties:
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               firstName:
+ *                 type: string
+ *               lastName:
  *                 type: string
  *     responses:
  *       201:
@@ -45,7 +51,7 @@ CredentialRouter.route('/').post(
 
 /**
  * @swagger
- * /credentials/admins:
+ * /v1/credentials/admins:
  *   post:
  *     summary: Create a new admin credential
  *     tags: [Credentials]
@@ -74,7 +80,7 @@ CredentialRouter.route('/admins').post(
 
 /**
  * @swagger
- * /credentials/login:
+ * /v1/credentials/login:
  *   post:
  *     summary: Login and receive auth tokens
  *     tags: [Credentials]
@@ -105,7 +111,7 @@ CredentialRouter.route('/login').post(
 
 /**
  * @swagger
- * /credentials/me:
+ * /v1/credentials/me:
  *   get:
  *     summary: Get current authenticated user's credentials
  *     tags: [Credentials]
