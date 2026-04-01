@@ -1,6 +1,7 @@
 import { CreationOptional, DataTypes, HasManyAddAssociationMixin, HasManyGetAssociationsMixin, HasOneGetAssociationMixin, InferAttributes, InferCreationAttributes, Model } from '@sequelize/core';
 import { sequelize } from '../../../loaders/datasource';
 import Credential from '../credentials/model';
+import Post from '../posts/model';
 
 export default class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<string>;
@@ -10,6 +11,7 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare getCredential: HasOneGetAssociationMixin<Credential>;
+  declare getPosts: HasManyGetAssociationsMixin<Post>;
 }
 
 User.init(
@@ -46,11 +48,17 @@ User.init(
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
+    deletedAt: {
+      field: 'deleted_at',
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,
     tableName: 'users',
     modelName: 'User',
     sequelize,
+    paranoid: true
   },
 );
