@@ -19,7 +19,8 @@ export default class CommentController {
   };
 
   getComments = async (req: Request, res: Response) => {
-    const comments = await this._service.find(req.query);
+    const userId = (req as any).auth?.user?.id as string;
+    const comments = await this._service.find(req.query, userId);
     return SuccessResponses(req, res, comments, {
       statusCode: 200,
     });
@@ -27,7 +28,8 @@ export default class CommentController {
 
   getCommentById = async (req: Request, res: Response) => {
     const { commentId } = req.params as { commentId: string };
-    const comment = await this._service.findCommentById(commentId);
+    const userId = (req as any).auth?.user?.id as string;
+    const comment = await this._service.findCommentById(commentId, userId);
     return SuccessResponses(req, res, comment, {
       statusCode: 200,
     });

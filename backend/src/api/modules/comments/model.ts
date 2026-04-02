@@ -2,6 +2,7 @@ import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, 
 import { sequelize } from '../../../loaders/datasource';
 import User from '../users/model';
 import Post from '../posts/model';
+import Reaction from '../reactions/model';
 
 export default class Comment extends Model<InferAttributes<Comment>, InferCreationAttributes<Comment>> {
   declare id: CreationOptional<string>;
@@ -104,4 +105,12 @@ Comment.belongsTo(Post, {
   },
   as: 'post',
 });
+
+// Comment.hasMany(Reaction, {
+//   foreignKey: 'reactableId',
+//   scope: {
+//     reactableType: 'comment'
+//   },
+//   as: 'reactions'
+// });
 

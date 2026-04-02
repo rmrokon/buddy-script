@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { SuccessResponses } from '../../../utils/responses';
 import { IPostRequestBody } from './types';
 import { IPostService } from './service';
+import { logger } from '../../../libs';
 
 export default class PostController {
   _service: IPostService;
@@ -12,22 +13,26 @@ export default class PostController {
 
   createPost = async (req: Request, res: Response) => {
     const body = req.body as IPostRequestBody;
-    const post = await this._service.createPost(body);
+    console.dir({ auth: req.auth }, { depth: 5 });
+    const userId = req.auth.user?.id as string;
+    const post = await this._service.createPost({ ...body, userId });
     return SuccessResponses(req, res, post, {
       statusCode: 200,
     });
   };
 
   getPosts = async (req: Request, res: Response) => {
-    const users = await this._service.find(req.query);
-    return SuccessResponses(req, res, users, {
+    const userId = req.auth.user?.id as string;
+    const posts = await this._service.find(req.query, userId);
+    return SuccessResponses(req, res, posts, {
       statusCode: 200,
     });
   };
 
   getPostById = async (req: Request, res: Response) => {
     const { postId } = req.params as { postId: string };
-    const post = await this._service.findPostById(postId);
+    const userId = req.auth.user?.id as string;
+    const post = await this._service.findPostById(postId, userId);
     return SuccessResponses(req, res, post, {
       statusCode: 200,
     });
@@ -35,7 +40,8 @@ export default class PostController {
 
   updatePost = async (req: Request, res: Response) => {
     const { postId } = req.params as { postId: string };
-    const result = await this._service.updatePost({ id: postId }, req.body);
+    const userId = req.auth.user?.id as string;
+    const result = await this._service.updatePost({ id: postId }, { ...req.body, userId });
     return SuccessResponses(req, res, result, {
       statusCode: 200,
     });

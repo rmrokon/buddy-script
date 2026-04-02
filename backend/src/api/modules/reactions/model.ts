@@ -1,6 +1,8 @@
 import { CreationOptional, DataTypes, InferAttributes, InferCreationAttributes, Model } from '@sequelize/core';
 import { sequelize } from '../../../loaders/datasource';
 import User from '../users/model';
+import Post from '../posts/model';
+import Comment from '../comments/model';
 
 export default class Reaction extends Model<InferAttributes<Reaction>, InferCreationAttributes<Reaction>> {
   declare id: CreationOptional<string>;
@@ -87,3 +89,4 @@ Reaction.belongsTo(User, {
   },
   as: 'user',
 });
+

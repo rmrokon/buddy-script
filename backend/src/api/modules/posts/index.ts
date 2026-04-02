@@ -51,7 +51,7 @@ export const PostRouter = Router();
  *         description: List of posts retrieved
  */
 PostRouter.route('/')
-  .post([validateRequestBody(PostBodyValidationSchema)], asyncCatchHandler(postController.createPost))
+  .post([isAuthenticated, validateRequestBody(PostBodyValidationSchema)], asyncCatchHandler(postController.createPost))
   .get([isAuthenticated], asyncCatchHandler(postController.getPosts));
 
 /**

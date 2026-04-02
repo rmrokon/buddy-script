@@ -2,10 +2,11 @@ import { Transaction } from '@sequelize/core';
 import { IDataValues } from '../../../utils';
 import { IReaction, IReactionRequestBody } from './types';
 import ReactionRepository from './repository';
+import User from '../users/model';
 
 export interface IReactionService {
   toggleReaction(body: IReactionRequestBody, options?: { t: Transaction }): Promise<IReaction | null>;
-  find(query: Record<string, unknown>, options?: { t: Transaction }): Promise<Partial<IReaction>[]>;
+  find(query: Record<string, unknown>, options?: { t: Transaction }): Promise<any>;
 }
 
 export default class ReactionService implements IReactionService {
@@ -52,7 +53,24 @@ export default class ReactionService implements IReactionService {
   }
 
   async find(query: Record<string, unknown>, options?: { t: Transaction }) {
-    const reactions = await this._repo.find(query, options);
+    const { page, limit, ...otherQuery } = query;
+    const limitVal = limit ? +limit : 10;
+    const pageVal = page ? +page : 1;
+
+    const reactions = await this._repo.findWithPagination({
+      ...otherQuery,
+      limit: limitVal.toString(),
+      page: pageVal.toString(),
+    }, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'firstName', 'lastName'],
+        }
+      ],
+      ...options
+    });
     return reactions;
   }
 }
