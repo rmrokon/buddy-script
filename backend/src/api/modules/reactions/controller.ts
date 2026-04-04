@@ -12,8 +12,8 @@ export default class ReactionController {
 
   toggleReaction = async (req: Request, res: Response) => {
     const body = req.body as IReactionRequestBody;
-    const reaction = await this._service.toggleReaction(body);
-    
+    const reaction = await this._service.toggleReaction({ ...body, userId: req.auth.user?.id });
+
     return SuccessResponses(req, res, reaction || { message: 'Reaction removed' }, {
       statusCode: 200,
     });

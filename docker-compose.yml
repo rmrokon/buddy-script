@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=buddy_script
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - buddy-script-network
+
+  backend:
+    build:
+      context: ./backend
+      target: development
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - buddy-script-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 4000:8080
+    networks:
+      - buddy-script-network
+
+volumes:
+  postgres_data:
+
+networks:
+  buddy-script-network:

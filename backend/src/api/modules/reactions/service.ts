@@ -5,7 +5,7 @@ import ReactionRepository from './repository';
 import User from '../users/model';
 
 export interface IReactionService {
-  toggleReaction(body: IReactionRequestBody, options?: { t: Transaction }): Promise<IReaction | null>;
+  toggleReaction(body: IReactionRequestBody & { userId: string }, options?: { t: Transaction }): Promise<IReaction | null>;
   find(query: Record<string, unknown>, options?: { t: Transaction }): Promise<any>;
 }
 
@@ -23,7 +23,7 @@ export default class ReactionService implements IReactionService {
     };
   }
 
-  async toggleReaction(body: IReactionRequestBody, options?: { t: Transaction }) {
+  async toggleReaction(body: IReactionRequestBody & { userId: string }, options?: { t: Transaction }) {
     // Check if reaction exists
     const existingReaction = await this._repo.findOne({
       userId: body.userId,
