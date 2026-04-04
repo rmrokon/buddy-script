@@ -29,3 +29,30 @@ export interface IReactionResponse {
     } | null; // null if reaction was removed
   };
 }
+
+export interface IReaction {
+  id: string;
+  reactionType: EReactionType;
+  userId: string;
+  reactableId: string;
+  reactableType: EReactableType;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    profilePic?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface IReactionsResponse {
+  success: boolean;
+  result: {
+    nodes: IReaction[];
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
