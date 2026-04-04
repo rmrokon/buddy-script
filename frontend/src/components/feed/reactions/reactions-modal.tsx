@@ -13,7 +13,20 @@ interface ReactionsModalProps {
     onClose: () => void;
 }
 
+import { createPortal } from "react-dom";
+
 export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POST, onClose }: ReactionsModalProps) => {
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+        // Prevent background scrolling when modal is open
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "unset";
+        };
+    }, []);
+
     const {
         data,
         fetchNextPage,
@@ -25,9 +38,29 @@ export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POS
 
     const allReactions = data?.pages.flatMap((page) => page.nodes) || [];
 
-    return (
-        <div className="modal fade show d-block" tabIndex={-1} style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-            <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    if (!mounted) return null;
+
+    return createPortal(
+        <div
+            className="modal fade show d-block"
+            tabIndex={-1}
+            style={{
+                backgroundColor: "rgba(0,0,0,0.5)",
+                cursor: "pointer",
+                zIndex: 9999,
+                position: "fixed",
+                top: -40,
+                left: 0,
+                width: "100%",
+                height: "100%"
+            }}
+            onClick={onClose}
+        >
+            <div
+                className="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                onClick={(e) => e.stopPropagation()}
+                style={{ cursor: "default" }}
+            >
                 <div className="modal-content _b_radious6 border-0 shadow-lg" style={{ maxHeight: "80vh" }}>
                     <div className="modal-header border-0 pb-0">
                         <h5 className="modal-title fw-bold">Reactions</h5>
@@ -59,9 +92,9 @@ export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POS
                                 <li key={reaction.id} className="d-flex align-items-center justify-content-between mb-3">
                                     <div className="d-flex align-items-center">
                                         <div className="_feed_inner_timeline_post_box_image me-3" style={{ width: "40px", height: "40px" }}>
-                                            <img 
-                                                src={reaction.user.profilePic || getRandomAvatar(reaction.userId)} 
-                                                alt={reaction.user.firstName} 
+                                            <img
+                                                src={reaction.user.profilePic || getRandomAvatar(reaction.userId)}
+                                                alt={reaction.user.firstName}
                                                 className="rounded-circle w-100 h-100 object-fit-cover"
                                             />
                                         </div>
@@ -78,8 +111,8 @@ export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POS
 
                         {hasNextPage && (
                             <div className="text-center mt-3">
-                                <button 
-                                    className="btn btn-outline-primary btn-sm rounded-pill px-4" 
+                                <button
+                                    className="btn btn-outline-primary btn-sm rounded-pill px-4"
                                     onClick={() => fetchNextPage()}
                                     disabled={isFetchingNextPage}
                                 >
@@ -90,7 +123,7 @@ export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POS
                     </div>
                 </div>
             </div>
-            <div className="modal-backdrop fade show" style={{ zIndex: -1 }} onClick={onClose}></div>
-        </div>
+        </div>,
+        document.body
     );
 };
