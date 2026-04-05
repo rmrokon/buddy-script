@@ -35,9 +35,12 @@ export const useToggleReaction = () => {
             const response = await apiClient.post<IReactionResponse>("/reactions", data);
             return response.data.result;
         },
-        onSuccess: () => {
+        onSuccess: (_, variables) => {
             // Invalidate posts list to reflect new reaction counts and state
             queryClient.invalidateQueries({ queryKey: ["posts"] });
+            if (variables.reactableType === EReactableType.COMMENT) {
+                queryClient.invalidateQueries({ queryKey: ["comments"] });
+            }
         },
         // We can add optimistic updates here if needed for better UX
     });

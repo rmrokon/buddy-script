@@ -23,6 +23,7 @@ export interface IPost {
   currentUserReaction?: string;
   createdAt: string;
   updatedAt: string;
+  comments?: any[]; // To include latest comments from backend
 }
 
 export interface ICreatePostRequest {

@@ -8,25 +8,25 @@ import { useGetPosts } from "@/hooks/use-posts";
 import { IPost } from "@/types/post";
 
 const mockPosts = [
-    {
-        user: { name: "Karim Saif", image: "/assets/images/post_img.png" },
-        time: "5 minute ago",
-        visibility: "Public",
-        content: "-Healthy Tracking App",
-        image: "/assets/images/timeline_img.png",
-        reactionsCount: 9,
-        commentsCount: 12,
-        sharesCount: 122
-    },
-    {
-        user: { name: "Dylan Field", image: "/assets/images/profile.png" },
-        time: "1 hour ago",
-        visibility: "Public",
-        content: "Really excited about this new design system!",
-        reactionsCount: 45,
-        commentsCount: 5,
-        sharesCount: 10
-    }
+    // {
+    //     user: { name: "Karim Saif", image: "/assets/images/post_img.png" },
+    //     time: "5 minute ago",
+    //     visibility: "Public",
+    //     content: "-Healthy Tracking App",
+    //     image: "/assets/images/timeline_img.png",
+    //     reactionsCount: 9,
+    //     commentsCount: 12,
+    //     sharesCount: 122
+    // },
+    // {
+    //     user: { name: "Dylan Field", image: "/assets/images/profile.png" },
+    //     time: "1 hour ago",
+    //     visibility: "Public",
+    //     content: "Really excited about this new design system!",
+    //     reactionsCount: 45,
+    //     commentsCount: 5,
+    //     sharesCount: 10
+    // }
 ];
 
 export default function FeedPage() {

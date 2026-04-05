@@ -7,6 +7,9 @@ interface IUser {
   type: "ADMIN";
   createdAt: string;
   updatedAt: string;
+  profilePic?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface AuthState {
