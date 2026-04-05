@@ -6,7 +6,7 @@ import { EPostVisibility } from './types';
 
 export default class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>> {
   declare id: CreationOptional<string>;
-  declare content: string;
+  declare content: CreationOptional<string>;
   declare image: string | null;
   declare visibility: EPostVisibility;
   declare userId: string;
@@ -26,10 +26,10 @@ Post.init(
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false,
+      allowNull: true,
     },
     image: {
-      type: DataTypes.STRING(128),
+      type: DataTypes.STRING(255),
       allowNull: true,
     },
     visibility: {

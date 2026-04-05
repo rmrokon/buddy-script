@@ -20,7 +20,22 @@ export const useCreatePost = () => {
 
     return useMutation({
         mutationFn: async (postData: ICreatePostRequest) => {
-            const response = await apiClient.post("/posts", postData);
+            let data: any = postData;
+
+            // If image is a File, use FormData
+            if (postData.image instanceof File) {
+                const formData = new FormData();
+                if (postData.content) formData.append("content", postData.content);
+                formData.append("visibility", postData.visibility);
+                formData.append("image", postData.image);
+                data = formData;
+            }
+
+            const response = await apiClient.post("/posts", data, {
+                headers: {
+                    "Content-Type": postData.image instanceof File ? "multipart/form-data" : "application/json",
+                },
+            });
             return response.data;
         },
         onSuccess: () => {

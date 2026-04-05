@@ -2,8 +2,29 @@ import { Router } from 'express';
 import { asyncCatchHandler, isAuthenticated, validateRequestBody } from '../../middlewares';
 import { postController, userController } from '../bootstrap';
 import { PostBodyValidationSchema } from './validations';
+import multer from 'multer';
+import { BadRequest } from '../../../utils/errors';
 
 export const PostRouter = Router();
+
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (_req, file, cb) => {
+    if (
+      file.mimetype === 'image/jpeg' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/webp'
+    ) {
+      cb(null, true);
+    } else {
+      cb(new BadRequest('Only images are allowed (jpeg, jpg, png, webp)'));
+    }
+  },
+});
 
 /**
  * @swagger
@@ -51,7 +72,21 @@ export const PostRouter = Router();
  *         description: List of posts retrieved
  */
 PostRouter.route('/')
-  .post([isAuthenticated, validateRequestBody(PostBodyValidationSchema)], asyncCatchHandler(postController.createPost))
+  .post(
+    [
+      isAuthenticated,
+      upload.single('image'),
+      (req: any, _res: any, next: any) => {
+        // If a file was uploaded, we set a dummy image value in body so Zod validation passes
+        if (req.file && !req.body.image) {
+          req.body.image = 'pending_upload';
+        }
+        next();
+      },
+      validateRequestBody(PostBodyValidationSchema),
+    ],
+    asyncCatchHandler(postController.createPost),
+  )
   .get([isAuthenticated], asyncCatchHandler(postController.getPosts));
 
 /**
