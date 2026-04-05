@@ -34,7 +34,12 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
   if (!isOpen) return null;
 
   return (
-    <div id="_notify_drop" className="_notification_dropdown" style={{ display: "block" }}>
+    <div 
+      id="_notify_drop" 
+      className="_notification_dropdown" 
+      style={{ display: "block" }}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="_notifications_content">
         <h4 className="_notifications_content_title">Notifications</h4>
         <div className="_notification_box_right">

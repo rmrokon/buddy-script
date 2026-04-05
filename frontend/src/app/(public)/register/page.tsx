@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
+    firstName: z.string().min(1, "First name is required"),
+    lastName: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
@@ -24,6 +26,8 @@ export default function RegisterPage() {
     const { register, handleSubmit, formState: { errors } } = useForm<z.infer<typeof registerSchema>>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
+            firstName: "",
+            lastName: "",
             email: "",
             password: "",
             confirmPassword: "",
@@ -53,6 +57,28 @@ export default function RegisterPage() {
             </div>
             <form className="_social_login_form" onSubmit={handleSubmit(onSubmit)}>
                 <div className="row">
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div className="_social_login_form_input _mar_b14">
+                            <label className="_social_login_label _mar_b8">First Name</label>
+                            <input 
+                                type="text" 
+                                className={`form-control _social_login_input ${errors.firstName ? 'is-invalid' : ''}`}
+                                {...register("firstName")}
+                            />
+                            {errors.firstName && <div className="invalid-feedback">{errors.firstName.message}</div>}
+                        </div>
+                    </div>
+                    <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+                        <div className="_social_login_form_input _mar_b14">
+                            <label className="_social_login_label _mar_b8">Last Name</label>
+                            <input 
+                                type="text" 
+                                className={`form-control _social_login_input ${errors.lastName ? 'is-invalid' : ''}`}
+                                {...register("lastName")}
+                            />
+                            {errors.lastName && <div className="invalid-feedback">{errors.lastName.message}</div>}
+                        </div>
+                    </div>
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                         <div className="_social_login_form_input _mar_b14">
                             <label className="_social_login_label _mar_b8">Email</label>
