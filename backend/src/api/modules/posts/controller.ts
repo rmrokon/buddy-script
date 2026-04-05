@@ -3,6 +3,7 @@ import { SuccessResponses } from '../../../utils/responses';
 import { IPostRequestBody } from './types';
 import { IPostService } from './service';
 import { logger } from '../../../libs';
+import { uploadToR2 } from '../../../libs/s3';
 
 export default class PostController {
   _service: IPostService;
@@ -13,11 +14,16 @@ export default class PostController {
 
   createPost = async (req: Request, res: Response) => {
     const body = req.body as IPostRequestBody;
-    console.dir({ auth: req.auth }, { depth: 5 });
     const userId = req.auth.user?.id as string;
+
+    if (req.file) {
+      const imageUrl = await uploadToR2(req.file);
+      body.image = imageUrl;
+    }
+
     const post = await this._service.createPost({ ...body, userId });
     return SuccessResponses(req, res, post, {
-      statusCode: 200,
+      statusCode: 201,
     });
   };
 

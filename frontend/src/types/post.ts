@@ -48,14 +48,14 @@ export interface IPreviewComment {
 }
 
 export interface ICreatePostRequest {
-  content: string;
+  content?: string;
   visibility: EPostVisibility;
-  image?: string;
+  image?: File | string;
 }
 
 export interface IPostsResponse {
   result: {
-    data: IPost[];
+    nodes: IPost[];
     total: number;
     page: number;
     limit: number;
