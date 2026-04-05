@@ -39,7 +39,7 @@ export const CommentInput = ({
                 
                 // Auto-scroll to the new comment/reply section
                 setTimeout(() => {
-                    const scrollId = `comment-section-${postId}-${parentCommentId || "top"}`;
+                    const scrollId = `comment-section-${postId}-${parentCommentId ?? "root"}`;
                     const element = document.getElementById(scrollId);
                     if (element) {
                         element.scrollIntoView({ behavior: "smooth", block: "nearest" });

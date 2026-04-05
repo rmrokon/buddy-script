@@ -19,11 +19,32 @@ export interface IPost {
   userId: string;
   user: IUser;
   reactionsCount: number;
-  repliesCount: number;
+  commentsCount: number;    // Total count of ALL comments + replies (for display)
+  rootCommentsCount: number; // Count of only top-level (root) comments
   currentUserReaction?: string;
   createdAt: string;
   updatedAt: string;
-  comments?: any[]; // To include latest comments from backend
+  comments?: IPreviewComment[]; // Latest root comment provided by backend
+}
+
+// Lightweight preview comment included in post list response
+export interface IPreviewComment {
+  id: string;
+  postId: string;
+  userId: string;
+  parentCommentId: string | null;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  user: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    profilePic?: string;
+  };
+  reactionsCount?: number;
+  repliesCount?: number;
+  currentUserReaction?: string;
 }
 
 export interface ICreatePostRequest {

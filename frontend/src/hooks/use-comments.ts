@@ -8,9 +8,10 @@ interface IGetCommentsParams {
     parentCommentId?: string | null;
     page?: number;
     limit?: number;
+    enabled?: boolean;
 }
 
-export const useGetInfiniteComments = ({ postId, parentCommentId = null, limit = 5 }: IGetCommentsParams) => {
+export const useGetInfiniteComments = ({ postId, parentCommentId = null, limit = 5, enabled = true }: IGetCommentsParams) => {
     return useInfiniteQuery({
         queryKey: ["comments", postId, parentCommentId],
         queryFn: async ({ pageParam = 1 }) => {
@@ -28,7 +29,7 @@ export const useGetInfiniteComments = ({ postId, parentCommentId = null, limit =
         getNextPageParam: (lastPage, allPages) => {
             return lastPage?.page_info?.has_next_page ? allPages.length + 1 : undefined;
         },
-        enabled: !!postId,
+        enabled: !!postId && enabled,
     });
 };
 
@@ -49,9 +50,10 @@ export const useCreateComment = () => {
         onSuccess: (_, variables) => {
             // Invalidate post feed to update counts
             queryClient.invalidateQueries({ queryKey: ["posts"] });
-            // Invalidate the specific comment list (either top-level or replies)
+            // Invalidate all comment lists for this post to ensure parent reply counts 
+            // and nested threads are fully updated
             queryClient.invalidateQueries({
-                queryKey: ["comments", variables.postId, variables.parentCommentId || null]
+                queryKey: ["comments", variables.postId]
             });
             toast.success(variables.parentCommentId ? "Reply posted!" : "Comment posted!");
         },

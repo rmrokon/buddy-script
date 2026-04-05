@@ -12,7 +12,7 @@ export default class CommentController {
 
   createComment = async (req: Request, res: Response) => {
     const body = req.body as ICommentRequestBody;
-    const comment = await this._service.createComment(body);
+    const comment = await this._service.createComment({ ...body, userId: (req as any).auth?.user?.id as string });
     return SuccessResponses(req, res, comment, {
       statusCode: 201,
     });

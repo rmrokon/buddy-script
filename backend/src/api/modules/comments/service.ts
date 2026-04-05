@@ -6,7 +6,7 @@ import User from '../users/model';
 import Reaction from '../reactions/model';
 
 export interface ICommentService {
-  createComment(args: ICommentRequestBody, options?: { t: Transaction }): Promise<IComment>;
+  createComment(args: ICommentRequestBody & { userId: string }, options?: { t: Transaction }): Promise<IComment>;
   find(query: Record<string, unknown>, currentUserId: string, options?: { t: Transaction }): Promise<any>;
   findCommentById(id: string, currentUserId: string, options?: { t: Transaction }): Promise<any>;
   updateComment(
@@ -31,7 +31,7 @@ export default class CommentService implements ICommentService {
     };
   }
 
-  async createComment(body: ICommentRequestBody, options?: { t: Transaction }) {
+  async createComment(body: ICommentRequestBody & { userId: string }, options?: { t: Transaction }) {
     const comment = await this._repo.create(body, options);
     return this.convertToJson(comment as IDataValues<IComment>)!;
   }
@@ -83,12 +83,12 @@ export default class CommentService implements ICommentService {
           as: 'user',
           attributes: ['id', 'firstName', 'lastName'],
         },
-        {
-          model: Reaction,
-          as: 'reactions',
-          required: false,
-          where: { userId: currentUserId, reactableType: 'comment' },
-        }
+        // {
+        //   model: Reaction,
+        //   as: 'reactions',
+        //   required: false,
+        //   where: { userId: currentUserId, reactableType: 'comment' },
+        // }
       ],
       ...options,
     });
@@ -152,7 +152,7 @@ export default class CommentService implements ICommentService {
     const commentJson = comment.toJSON ? comment.toJSON() : comment as any;
     commentJson.currentUserReaction = commentJson.reactions && commentJson.reactions.length > 0 ? commentJson.reactions[0] : null;
     delete commentJson.reactions;
-    
+
     return commentJson;
   }
 

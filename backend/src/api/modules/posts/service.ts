@@ -73,6 +73,17 @@ export default class PostService implements IPostService {
           [
             sql`(
               SELECT COUNT(*)
+              FROM comments AS c
+              WHERE
+                c.post_id = "Post"."id"
+                AND c.parent_comment_id IS NULL
+                AND c.deleted_at IS NULL
+            )`,
+            'rootCommentsCount'
+          ],
+          [
+            sql`(
+              SELECT COUNT(*)
               FROM reactions AS r
               WHERE
                 r.reactable_type = 'post'
@@ -104,6 +115,7 @@ export default class PostService implements IPostService {
           model: Comment,
           as: 'comments',
           separate: true,
+          where: { parentCommentId: null },
           limit: 1,
           order: [['createdAt', 'DESC']],
           attributes: {
@@ -129,6 +141,16 @@ export default class PostService implements IPostService {
                   LIMIT 1
                 )`,
                 'currentUserReaction'
+              ],
+              [
+                sql`(
+                  SELECT COUNT(*)
+                  FROM comments AS c
+                  WHERE
+                    c.parent_comment_id = "Comment"."id"
+                    AND c.deleted_at IS NULL
+                )`,
+                'repliesCount'
               ]
             ]
           },
@@ -182,6 +204,17 @@ export default class PostService implements IPostService {
           [
             sql`(
               SELECT COUNT(*)
+              FROM comments AS c
+              WHERE
+                c.post_id = "Post"."id"
+                AND c.parent_comment_id IS NULL
+                AND c.deleted_at IS NULL
+            )`,
+            'rootCommentsCount'
+          ],
+          [
+            sql`(
+              SELECT COUNT(*)
               FROM reactions AS r
               WHERE
                 r.reactable_type = 'post'
@@ -201,6 +234,7 @@ export default class PostService implements IPostService {
           model: Comment,
           as: 'comments',
           separate: true,
+          where: { parentCommentId: null },
           limit: 1,
           order: [['createdAt', 'DESC']],
           attributes: ['id', 'content', 'createdAt', 'userId'],

@@ -2,17 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { IPost } from "@/types/post";
+import { IPost, IPreviewComment } from "@/types/post";
 import { getRandomAvatar } from "@/utils/avatar-utils";
 import { formatDistanceToNow } from "date-fns";
 import { EReactableType, EReactionType } from "@/types/reaction";
-import { useToggleReaction } from "@/hooks/use-reactions";
-import { LaughIcon } from "lucide-react";
 import { REACTION_ICONS } from "@/constants/reactions";
 import { ReactionsModal } from "./reactions/reactions-modal";
 import { ReactionButton } from "./reactions/reaction-button";
 import { CommentSection } from "./comments/comment-section";
-import { IComment } from "@/types/comment";
 
 interface PostCardProps {
     post?: IPost;
@@ -24,7 +21,8 @@ interface PostCardProps {
         content: string;
         image?: string;
         reactionsCount: number;
-        commentsCount: number;
+        commentsCount: number;    // Total count of ALL comments + replies (for display)
+        rootCommentsCount: number; // Count of only top-level (root) comments
         sharesCount: number;
     };
 }
@@ -34,7 +32,6 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isReactionsModalOpen, setIsReactionsModalOpen] = useState(false);
     const [isCommentsVisible, setIsCommentsVisible] = useState(true);
-    const toggleReactionMutation = useToggleReaction();
 
     // Determine which data to use
     const displayData = post ? {
@@ -46,10 +43,11 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
         content: post.content,
         image: post.image,
         reactionsCount: post.reactionsCount,
-        commentsCount: post.repliesCount,
+        commentsCount: post.commentsCount,
+        rootCommentsCount: post.rootCommentsCount,
         sharesCount: 0,
         currentUserReaction: post.currentUserReaction as EReactionType | undefined,
-        latestComments: (post.comments || []) as IComment[],
+        previewComments: (post.comments ?? []) as IPreviewComment[],
     } : {
         id: mockData?.user.name || "mock",
         userName: mockData?.user.name || "",
@@ -60,9 +58,10 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
         image: mockData?.image,
         reactionsCount: mockData?.reactionsCount || 0,
         commentsCount: mockData?.commentsCount || 0,
+        rootCommentsCount: mockData?.rootCommentsCount || 0,
         sharesCount: mockData?.sharesCount || 0,
         currentUserReaction: undefined,
-        latestComments: [] as IComment[],
+        previewComments: [] as IPreviewComment[],
     };
 
     if (!displayData) return null;
@@ -141,10 +140,10 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
                             className="btn btn-link p-0 text-decoration-none" 
                             onClick={() => setIsCommentsVisible(!isCommentsVisible)}
                         >
-                            <span>{displayData.commentsCount}</span> Comment
+                            <span>{displayData.commentsCount}</span> {displayData.commentsCount === 1 ? "Comment" : "Comments"}
                         </button>
                     </p>
-                    <p className="_feed_inner_timeline_total_reacts_para2"><span>{displayData.sharesCount}</span> Share</p>
+                    <p className="_feed_inner_timeline_total_reacts_para2"><span>{displayData.sharesCount}</span> {displayData.sharesCount === 1 ? "Share" : "Shares"}</p>
                 </div>
             </div>
 
@@ -179,10 +178,10 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
             </div>
 
             {isCommentsVisible && (
-                <CommentSection 
-                    postId={displayData.id} 
-                    initialComments={displayData.latestComments} 
-                    totalCount={displayData.commentsCount}
+                <CommentSection
+                    postId={displayData.id}
+                    previewComments={displayData.previewComments}
+                    totalCount={displayData.rootCommentsCount}
                 />
             )}
 
