@@ -19,10 +19,10 @@ export const sequelize = new Sequelize<PostgresDialect>({
     max: 3,
   },
   // For development environment disable ssl
-  ssl: {
-    rejectUnauthorized: true,
-    ca: CA_CERT,
-  },
+  // ssl: {
+  //   rejectUnauthorized: true,
+  //   ca: CA_CERT,
+  // },
   pool: {
     max: 3,
     min: 1,

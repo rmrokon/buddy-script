@@ -14,9 +14,9 @@ interface ReactionButtonProps {
     onReactionChange?: (newReaction: EReactionType | null) => void;
 }
 
-export const ReactionButton = ({ 
-    reactableId, 
-    reactableType, 
+export const ReactionButton = ({
+    reactableId,
+    reactableType,
     initialReaction,
     label = "Like",
     showLabel = true,
@@ -28,7 +28,7 @@ export const ReactionButton = ({
 
     const handleToggleReaction = (type: EReactionType) => {
         const isRemoving = activeReaction === type;
-        
+
         toggleReactionMutation.mutate({
             reactableId,
             reactableType,
@@ -64,7 +64,7 @@ export const ReactionButton = ({
             )}
 
             <button
-                className={`_feed_inner_timeline_reaction_emoji _feed_reaction border-0 bg-transparent p-0 ${activeReaction ? "_feed_reaction_active" : ""}`}
+                className={`_feed_inner_timeline_reaction_emoji _feed_reaction border-0 bg-transparent p-4 ${activeReaction ? "_feed_reaction_active" : ""}`}
                 onMouseEnter={() => setIsPickerOpen(true)}
                 onClick={() => handleToggleReaction(activeReaction || EReactionType.LIKE)}
                 disabled={toggleReactionMutation.isPending}

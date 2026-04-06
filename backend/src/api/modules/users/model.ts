@@ -10,6 +10,7 @@ export default class User extends Model<InferAttributes<User>, InferCreationAttr
   declare email: string;
   declare firstName: string;
   declare lastName: string;
+  declare profilePic?: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
   declare getCredential: HasOneGetAssociationMixin<Credential>;
@@ -39,6 +40,10 @@ User.init(
     lastName: {
       type: new DataTypes.STRING(128),
       allowNull: false,
+    },
+    profilePic: {
+      type: new DataTypes.STRING(128),
+      allowNull: true,
     },
     createdAt: {
       field: 'created_at',
