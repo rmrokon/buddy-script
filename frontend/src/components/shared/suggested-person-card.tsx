@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface SuggestedPersonProps {
     id: number;
@@ -18,7 +19,7 @@ export const SuggestedPersonCard = ({ name, description, image, variant = "conne
                 <div className="_left_inner_area_suggest_info_box">
                     <div className="_left_inner_area_suggest_info_image">
                         <Link href="/profile">
-                            <img src={image} alt="Image" className="_info_img" />
+                            <Image src={image} alt="Image" className="_info_img" width={40} height={40} style={{ objectFit: "cover" }} />
                         </Link>
                     </div>
                     <div className="_left_inner_area_suggest_info_txt">
@@ -40,7 +41,7 @@ export const SuggestedPersonCard = ({ name, description, image, variant = "conne
             <div className="_right_inner_area_info_box">
                 <div className="_right_inner_area_info_box_image">
                     <Link href="/profile">
-                        <img src={image} alt="Image" className="_ppl_img" />
+                        <Image src={image} alt="Image" className="_ppl_img" width={50} height={50} style={{ objectFit: "cover" }} />
                     </Link>
                 </div>
                 <div className="_right_inner_area_info_box_txt">

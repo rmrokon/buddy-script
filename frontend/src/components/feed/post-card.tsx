@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IPost, IPreviewComment } from "@/types/post";
 import { getRandomAvatar } from "@/utils/avatar-utils";
 import { formatDistanceToNow } from "date-fns";
@@ -73,8 +74,8 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
             <div className="_feed_inner_timeline_content _padd_r24 _padd_l24">
                 <div className="_feed_inner_timeline_post_top">
                     <div className="_feed_inner_timeline_post_box">
-                        <div className="_feed_inner_timeline_post_box_image">
-                            <img src={displayData.userImage} alt="" className="_post_img" />
+                        <div className="_feed_inner_timeline_post_box_image" style={{ position: "relative", overflow: "hidden" }}>
+                            <Image src={displayData.userImage} alt="" className="_post_img" fill style={{ objectFit: "cover" }} />
                         </div>
                         <div className="_feed_inner_timeline_post_box_txt">
                             <h4 className="_feed_inner_timeline_post_box_title">{displayData.userName}</h4>
@@ -113,15 +114,15 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
                 </div>
                 <h4 className="_feed_inner_timeline_post_title">{displayData.content}</h4>
                 {displayData.image && (
-                    <div className="_feed_inner_timeline_image">
-                        <img src={displayData.image} alt="" className="_time_img" />
+                    <div className="_feed_inner_timeline_image" style={{ position: "relative" }}>
+                        <Image src={displayData.image!} alt="" className="_time_img" width={500} height={500} style={{ objectFit: "cover" }} />
                     </div>
                 )}
             </div>
 
             <div className="_feed_inner_timeline_total_reacts _padd_r24 _padd_l24 _mar_b26">
-                <div 
-                    className="_feed_inner_timeline_total_reacts_image d-flex align-items-center" 
+                <div
+                    className="_feed_inner_timeline_total_reacts_image d-flex align-items-center"
                     style={{ cursor: "pointer" }}
                     onClick={() => setIsReactionsModalOpen(true)}
                 >
@@ -134,27 +135,27 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
                     </div>
                     <p className="_feed_inner_timeline_total_reacts_para ms-2">{displayData.reactionsCount}</p>
                 </div>
-                <div className="_feed_inner_timeline_total_reacts_txt">
+                <div className="_feed_inner_timeline_total_reacts_txt d-flex align-items-center gap-2">
                     <p className="_feed_inner_timeline_total_reacts_para1">
-                        <button 
-                            className="btn btn-link p-0 text-decoration-none" 
+                        <button
+                            className="btn btn-link p-0 text-decoration-none"
                             onClick={() => setIsCommentsVisible(!isCommentsVisible)}
                         >
-                            <span>{displayData.commentsCount}</span> {displayData.commentsCount === 1 ? "Comment" : "Comments"}
+                            <span>{displayData.commentsCount}</span> {displayData.commentsCount <= 1 ? "Comment" : "Comments"}
                         </button>
                     </p>
-                    <p className="_feed_inner_timeline_total_reacts_para2"><span>{displayData.sharesCount}</span> {displayData.sharesCount === 1 ? "Share" : "Shares"}</p>
+                    <p className="_feed_inner_timeline_total_reacts_para2"><span>{displayData.sharesCount}</span> {displayData.sharesCount <= 1 ? "Share" : "Shares"}</p>
                 </div>
             </div>
 
             <div className="_feed_inner_timeline_reaction position-relative px-4 d-flex align-items-center gap-3">
-                <ReactionButton 
-                    reactableId={displayData.id} 
-                    reactableType={EReactableType.POST} 
+                <ReactionButton
+                    reactableId={displayData.id}
+                    reactableType={EReactableType.POST}
                     initialReaction={activeReaction}
                 />
 
-                <button 
+                <button
                     className="_feed_inner_timeline_reaction_comment _feed_reaction border-0 bg-transparent p-0"
                     onClick={() => setIsCommentsVisible(!isCommentsVisible)}
                 >
@@ -186,9 +187,9 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
             )}
 
             {isReactionsModalOpen && post && (
-                <ReactionsModal 
-                    reactableId={post.id} 
-                    onClose={() => setIsReactionsModalOpen(false)} 
+                <ReactionsModal
+                    reactableId={post.id}
+                    onClose={() => setIsReactionsModalOpen(false)}
                 />
             )}
         </div>

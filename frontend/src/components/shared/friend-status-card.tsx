@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface FriendStatusProps {
     id: number;
@@ -17,7 +18,7 @@ export const FriendStatusCard = ({ name, description, image, status, lastSeen }:
         <div className="_feed_right_inner_area_card_ppl_box">
             <div className="_feed_right_inner_area_card_ppl_image">
                 <Link href="/profile">
-                    <img src={image} alt="" className="_box_ppl_img" />
+                    <Image src={image} alt="" className="_box_ppl_img" width={44} height={44} style={{ objectFit: "cover" }} />
                 </Link>
             </div>
             <div className="_feed_right_inner_area_card_ppl_txt">

@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface EventProps {
     id: number;
@@ -16,7 +17,7 @@ export const EventCard = ({ title, image, day, month, goingCount }: EventProps) 
     <Link className="_left_inner_event_card_link" href={`/events/${title}`}>
         <div className="_left_inner_event_card">
             <div className="_left_inner_event_card_iamge">
-                <img src={image} alt="Image" className="_card_img" />
+                <Image src={image} alt="Image" className="_card_img" width={260} height={120} style={{ objectFit: "cover", width: "100%" }} />
             </div>
             <div className="_left_inner_event_card_content">
                 <div className="_left_inner_card_date">

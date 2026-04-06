@@ -6,6 +6,7 @@ import * as z from "zod";
 import { useRegister } from "@/hooks/use-auth";
 import { AuthLayout } from "@/components/shared/auth-layout";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
@@ -46,12 +47,12 @@ export default function RegisterPage() {
     return (
         <AuthLayout imageSrc="/assets/images/registration.png">
             <div className="_social_login_left_logo _mar_b28 text-center">
-                <img src="/assets/images/logo.svg" alt="Image" className="_left_logo" />
+                <Image src="/assets/images/logo.svg" alt="BuddyScript" className="_left_logo" width={140} height={40} />
             </div>
             <p className="_social_login_content_para _mar_b8">Get Started Now</p>
             <h4 className="_social_login_content_title _titl4 _mar_b50">Registration</h4>
             <button type="button" className="_social_login_content_btn _mar_b40">
-                <img src="/assets/images/google.svg" alt="Image" className="_google_img" /> <span>Register with google</span>
+                <Image src="/assets/images/google.svg" alt="Google" className="_google_img" width={20} height={20} /> <span>Register with google</span>
             </button>
             <div className="_social_login_content_bottom_txt _mar_b40"> <span>Or</span>
             </div>

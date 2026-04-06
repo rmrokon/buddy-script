@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useCreatePost } from "@/hooks/use-posts";
 import { EPostVisibility, ICreatePostRequest } from "@/types/post";
+import { useAuthStore } from "@/store/use-auth-store";
 
 const postSchema = z.object({
     content: z.string().optional(),
@@ -17,11 +19,12 @@ const postSchema = z.object({
 });
 
 export const CreatePost = () => {
+    const { user } = useAuthStore();
     const createPostMutation = useCreatePost();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-    
+
     const { register, handleSubmit, reset, setValue, formState: { errors } } = useForm<z.infer<typeof postSchema>>({
         resolver: zodResolver(postSchema),
         defaultValues: {
@@ -62,12 +65,12 @@ export const CreatePost = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="_feed_inner_text_area _b_radious6 _padd_b24 _padd_t24 _padd_r24 _padd_l24 _mar_b16">
             <div className="_feed_inner_text_area_box">
                 <div className="_feed_inner_text_area_box_image">
-                    <img src="/assets/images/txt_img.png" alt="Image" className="_txt_img" />
+                    <Image src="/assets/images/txt_img.png" alt="Image" className="_txt_img" width={40} height={40} />
                 </div>
                 <div className="form-floating _feed_inner_text_area_box_form">
-                    <textarea 
-                        className={`form-control _textarea ${errors.content ? 'is-invalid' : ''}`} 
-                        placeholder="Write something ..." 
+                    <textarea
+                        className={`form-control _textarea ${errors.content ? 'is-invalid' : ''}`}
+                        placeholder="Write something ..."
                         id="postContent"
                         {...register("content")}
                     ></textarea>
@@ -83,9 +86,9 @@ export const CreatePost = () => {
 
             {previewUrl && (
                 <div className="position-relative mt-3 _b_radious6 overflow-hidden" style={{ maxWidth: "200px" }}>
-                    <img src={previewUrl} alt="Preview" className="img-fluid rounded" />
-                    <button 
-                        type="button" 
+                    <Image src={previewUrl!} alt="Preview" className="img-fluid rounded" width={200} height={200} unoptimized style={{ objectFit: "contain", width: "100%", height: "auto" }} />
+                    <button
+                        type="button"
                         className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle d-flex align-items-center justify-content-center"
                         style={{ width: "24px", height: "24px", padding: 0 }}
                         onClick={removeImage}
@@ -96,15 +99,15 @@ export const CreatePost = () => {
             )}
             <div className="_feed_inner_text_area_bottom d-flex align-items-center justify-content-between">
                 <div className="_feed_inner_text_area_item d-flex align-items-center gap-3">
-                    <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        className="d-none" 
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        className="d-none"
                         accept="image/*"
                         onChange={onFileChange}
                     />
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         className="_feed_inner_text_area_bottom_photo_link _feed_common border-0 bg-transparent p-0"
                         onClick={() => fileInputRef.current?.click()}
                     >
@@ -119,7 +122,7 @@ export const CreatePost = () => {
                     <button type="button" className="_feed_inner_text_area_bottom_photo_link _feed_common border-0 bg-transparent p-0">
                         <span className="_feed_inner_text_area_bottom_photo_iamge _mar_img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" fill="none" viewBox="0 0 22 24">
-                                <path fill="#666" d="M11.485 4.5c2.213 0 3.753 1.534 3.917 3.784l2.418-1.082c1.047-.468 2.188.327 2.271 1.533l.005.141v6.64c0 1.237-1.103 2.093-2.155 1.72l-.121-.047-2.418-1.083c-.164 2.25-1.708 3.785-3.917 3.785H5.76c-2.343 0-3.932-1.72-3.932-4.188V8.688c0-2.47 1.589-4.188 3.932-4.188h5.726zm0 1.5H5.76C4.169 6 3.197 7.05 3.197 8.688v7.015c0 1.636.972 2.688 2.562 2.688h5.726c1.586 0 2.562-1.054 2.562-2.688v-.686-6.329c0-1.636-.973-2.688-2.562-2.688zM18.4 8.57l-.062.02-2.921 1.306v4.596l2.921 1.307c.165.073.343-.036.38-.215l.008-.07V8.876c0-.195-.16-.334-.326-.305z"/>
+                                <path fill="#666" d="M11.485 4.5c2.213 0 3.753 1.534 3.917 3.784l2.418-1.082c1.047-.468 2.188.327 2.271 1.533l.005.141v6.64c0 1.237-1.103 2.093-2.155 1.72l-.121-.047-2.418-1.083c-.164 2.25-1.708 3.785-3.917 3.785H5.76c-2.343 0-3.932-1.72-3.932-4.188V8.688c0-2.47 1.589-4.188 3.932-4.188h5.726zm0 1.5H5.76C4.169 6 3.197 7.05 3.197 8.688v7.015c0 1.636.972 2.688 2.562 2.688h5.726c1.586 0 2.562-1.054 2.562-2.688v-.686-6.329c0-1.636-.973-2.688-2.562-2.688zM18.4 8.57l-.062.02-2.921 1.306v4.596l2.921 1.307c.165.073.343-.036.38-.215l.008-.07V8.876c0-.195-.16-.334-.326-.305z" />
                             </svg>
                         </span>
                         Video
@@ -128,7 +131,7 @@ export const CreatePost = () => {
                     <button type="button" className="_feed_inner_text_area_bottom_photo_link _feed_common border-0 bg-transparent p-0">
                         <span className="_feed_inner_text_area_bottom_photo_iamge _mar_img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="22" height="24" fill="none" viewBox="0 0 22 24">
-                                <path fill="#666" d="M14.371 2c.32 0 .585.262.627.603l.005.095v.788c2.598.195 4.188 2.033 4.18 5v8.488c0 3.145-1.786 5.026-4.656 5.026H7.395C4.53 22 2.74 20.087 2.74 16.904V8.486c0-2.966 1.596-4.804 4.187-5v-.788c0-.386.283-.698.633-.698.32 0 .584.262.626.603l.006.095v.771h5.546v-.771c0-.386.284-.698.633-.698zm3.546 8.283H4.004l.001 6.621c0 2.325 1.137 3.616 3.183 3.697l.207.004h7.132c2.184 0 3.39-1.271 3.39-3.63v-6.692zm-3.202 5.853c.349 0 .632.312.632.698 0 .353-.238.645-.546.691l-.086.006c-.357 0-.64-.312-.64-.697 0-.354.237-.645.546-.692l.094-.006zm-3.742 0c.35 0 .632.312.632.698 0 .353-.238.645-.546.691l-.086.006c-.357 0-.64-.312-.64-.697 0-.354.238-.645.546-.692l.094-.006zm-3.75 0c.35 0 .633.312.633.698 0 .353-.238.645-.547.691l-.093.006c-.35 0-.633-.312-.633-.697 0-.354.238-.645.547-.692l.094-.006zm7.492-3.615c.349 0 .632.312.632.697 0 .354-.238.645-.546.692l-.086.006c-.357 0-.64-.312-.64-.698 0-.353.237-.645.546-.691l.094-.006zm-3.742 0c.35 0 .632.312.632.697 0 .354-.238.645-.546.692l-.086.006c-.357 0-.64-.312-.64-.698 0-.353.238-.645.546-.691l.094-.006zm-3.75 0c.35 0 .633.312.633.697 0 .354-.238.645-.547.692l-.093.006c-.35 0-.633-.312-.633-.698 0-.353.238-.645.547-.691l.094-.006zm6.515-7.657H8.192v.895c0 .385-.283.698-.633.698-.32 0-.584-.263-.626-.603l-.006-.095v-.874c-1.886.173-2.922 1.422-2.922 3.6v.402h13.912v-.403c.007-2.181-1.024-3.427-2.914-3.599v.874c0 .385-.283.698-.632.698-.32 0-.585-.263-.627-.603l-.005-.095v-.895z"/>
+                                <path fill="#666" d="M14.371 2c.32 0 .585.262.627.603l.005.095v.788c2.598.195 4.188 2.033 4.18 5v8.488c0 3.145-1.786 5.026-4.656 5.026H7.395C4.53 22 2.74 20.087 2.74 16.904V8.486c0-2.966 1.596-4.804 4.187-5v-.788c0-.386.283-.698.633-.698.32 0 .584.262.626.603l.006.095v.771h5.546v-.771c0-.386.284-.698.633-.698zm3.546 8.283H4.004l.001 6.621c0 2.325 1.137 3.616 3.183 3.697l.207.004h7.132c2.184 0 3.39-1.271 3.39-3.63v-6.692zm-3.202 5.853c.349 0 .632.312.632.698 0 .353-.238.645-.546.691l-.086.006c-.357 0-.64-.312-.64-.697 0-.354.237-.645.546-.692l.094-.006zm-3.742 0c.35 0 .632.312.632.698 0 .353-.238.645-.546.691l-.086.006c-.357 0-.64-.312-.64-.697 0-.354.238-.645.546-.692l.094-.006zm-3.75 0c.35 0 .633.312.633.698 0 .353-.238.645-.547.691l-.093.006c-.35 0-.633-.312-.633-.697 0-.354.238-.645.547-.692l.094-.006zm7.492-3.615c.349 0 .632.312.632.697 0 .354-.238.645-.546.692l-.086.006c-.357 0-.64-.312-.64-.698 0-.353.237-.645.546-.691l.094-.006zm-3.742 0c.35 0 .632.312.632.697 0 .354-.238.645-.546.692l-.086.006c-.357 0-.64-.312-.64-.698 0-.353.238-.645.546-.691l.094-.006zm-3.75 0c.35 0 .633.312.633.697 0 .354-.238.645-.547.692l-.093.006c-.35 0-.633-.312-.633-.698 0-.353.238-.645.547-.691l.094-.006zm6.515-7.657H8.192v.895c0 .385-.283.698-.633.698-.32 0-.584-.263-.626-.603l-.006-.095v-.874c-1.886.173-2.922 1.422-2.922 3.6v.402h13.912v-.403c.007-2.181-1.024-3.427-2.914-3.599v.874c0 .385-.283.698-.632.698-.32 0-.585-.263-.627-.603l-.005-.095v-.895z" />
                             </svg>
                         </span>
                         Event
@@ -137,14 +140,14 @@ export const CreatePost = () => {
                     <button type="button" className="_feed_inner_text_area_bottom_photo_link _feed_common border-0 bg-transparent p-0">
                         <span className="_feed_inner_text_area_bottom_photo_iamge _mar_img">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" fill="none" viewBox="0 0 18 20">
-                                <path fill="#666" d="M12.49 0c2.92 0 4.665 1.92 4.693 5.132v9.659c0 3.257-1.75 5.209-4.693 5.209H5.434c-.377 0-.734-.032-1.07-.095l-.2-.041C2 19.371.74 17.555.74 14.791V5.209c0-.334.019-.654.055-.96C1.114 1.564 2.799 0 5.434 0h7.056zm-.008 1.457H5.434c-2.244 0-3.381 1.263-3.381 3.752v9.582c0 2.489 1.137 3.752 3.38 3.752h7.049c2.242 0 3.372-1.263 3.372-3.752V5.209c0-2.489-1.13-3.752-3.372-3.752zm-.239 12.053c.36 0 .652.324.652.724 0 .4-.292.724-.652.724H5.656c-.36 0-.652-.324-.652-.724 0-.4.293-.724.652-.724h6.587zm0-4.239a.643.643 0 01.632.339.806.806 0 010 .78.643.643 0 01-.632.339H5.656c-.334-.042-.587-.355-.587-.729s.253-.688.587-.729h6.587zM8.17 5.042c.335.041.588.355.588.729 0 .373-.253.687-.588.728H5.665c-.336-.041-.589-.355-.589-.728 0-.374.253-.688.589-.729H8.17z"/>
+                                <path fill="#666" d="M12.49 0c2.92 0 4.665 1.92 4.693 5.132v9.659c0 3.257-1.75 5.209-4.693 5.209H5.434c-.377 0-.734-.032-1.07-.095l-.2-.041C2 19.371.74 17.555.74 14.791V5.209c0-.334.019-.654.055-.96C1.114 1.564 2.799 0 5.434 0h7.056zm-.008 1.457H5.434c-2.244 0-3.381 1.263-3.381 3.752v9.582c0 2.489 1.137 3.752 3.38 3.752h7.049c2.242 0 3.372-1.263 3.372-3.752V5.209c0-2.489-1.13-3.752-3.372-3.752zm-.239 12.053c.36 0 .652.324.652.724 0 .4-.292.724-.652.724H5.656c-.36 0-.652-.324-.652-.724 0-.4.293-.724.652-.724h6.587zm0-4.239a.643.643 0 01.632.339.806.806 0 010 .78.643.643 0 01-.632.339H5.656c-.334-.042-.587-.355-.587-.729s.253-.688.587-.729h6.587zM8.17 5.042c.335.041.588.355.588.729 0 .373-.253.687-.588.728H5.665c-.336-.041-.589-.355-.589-.728 0-.374.253-.688.589-.729H8.17z" />
                             </svg>
                         </span>
                         Article
                     </button>
-                    
-                    <select 
-                        className="form-select form-select-sm border-0 bg-light" 
+
+                    <select
+                        className="form-select form-select-sm border-0 bg-light"
                         style={{ width: "auto", fontSize: "14px", color: "#666" }}
                         {...register("visibility")}
                     >
@@ -153,8 +156,8 @@ export const CreatePost = () => {
                     </select>
                 </div>
                 <div className="_feed_inner_text_area_btn">
-                    <button 
-                        type="submit" 
+                    <button
+                        type="submit"
                         className="_feed_inner_text_area_btn_link border-0"
                         disabled={createPostMutation.isPending}
                     >

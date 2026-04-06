@@ -14,9 +14,9 @@ interface ReactionButtonProps {
     onReactionChange?: (newReaction: EReactionType | null) => void;
 }
 
-export const ReactionButton = ({ 
-    reactableId, 
-    reactableType, 
+export const ReactionButton = ({
+    reactableId,
+    reactableType,
     initialReaction,
     label = "Like",
     showLabel = true,
@@ -28,7 +28,7 @@ export const ReactionButton = ({
 
     const handleToggleReaction = (type: EReactionType) => {
         const isRemoving = activeReaction === type;
-        
+
         toggleReactionMutation.mutate({
             reactableId,
             reactableType,
@@ -45,8 +45,8 @@ export const ReactionButton = ({
         <div className="position-relative d-inline-block">
             {/* Reaction Picker Popup */}
             {isPickerOpen && (
-                <div className="position-absolute bg-white shadow-sm p-2 rounded-pill d-flex gap-2"
-                    style={{ bottom: "100%", left: 0, zIndex: 100, marginBottom: "10px" }}
+                <div className="position-absolute bg-white shadow-sm px-2 rounded-pill d-flex gap-2"
+                    style={{ bottom: "100%", left: 0, zIndex: 100 }}
                     onMouseLeave={() => setIsPickerOpen(false)}>
                     {(Object.keys(REACTION_ICONS) as EReactionType[]).map((type) => (
                         <div
@@ -64,7 +64,7 @@ export const ReactionButton = ({
             )}
 
             <button
-                className={`_feed_inner_timeline_reaction_emoji _feed_reaction border-0 bg-transparent p-0 ${activeReaction ? "_feed_reaction_active" : ""}`}
+                className={`_feed_inner_timeline_reaction_emoji _feed_reaction border-0 bg-transparent p-4 ${activeReaction ? "_feed_reaction_active" : ""}`}
                 onMouseEnter={() => setIsPickerOpen(true)}
                 onClick={() => handleToggleReaction(activeReaction || EReactionType.LIKE)}
                 disabled={toggleReactionMutation.isPending}

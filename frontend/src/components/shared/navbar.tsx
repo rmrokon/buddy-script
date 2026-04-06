@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useAuthStore } from "@/store/use-auth-store";
 import { useRouter } from "next/navigation";
 import { NotificationDropdown } from "./notification-dropdown";
@@ -24,7 +25,7 @@ export const Navbar = () => {
             <div className="container _custom_container">
                 <div className="_logo_wrap">
                     <Link className="navbar-brand" href="/feed">
-                        <img src="/assets/images/logo.svg" alt="Image" className="_nav_logo" />
+                        <Image src="/assets/images/logo.svg" alt="BuddyScript Logo" className="_nav_logo" width={140} height={40} />
                     </Link>
                 </div>
                 <button className="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +91,7 @@ export const Navbar = () => {
                         style={{ cursor: "pointer" }}
                     >
                         <div className="_header_nav_profile_image">
-                            <img src="/assets/images/profile.png" alt="Image" className="_nav_profile_img" />
+                            <Image src="/assets/images/profile.png" alt="Profile" className="_nav_profile_img" width={40} height={40} style={{ objectFit: "cover" }} />
                         </div>
                         <div className="_header_nav_dropdown">
                             <p className="_header_nav_para">
@@ -114,7 +115,7 @@ export const Navbar = () => {
                             >
                                 <div className="_nav_profile_dropdown_info">
                                     <div className="_nav_profile_dropdown_image">
-                                        <img src="/assets/images/profile.png" alt="Image" className="_nav_drop_img" />
+                                        <Image src="/assets/images/profile.png" alt="Profile" className="_nav_drop_img" width={50} height={50} style={{ objectFit: "cover" }} />
                                     </div>
                                     <div className="_nav_profile_dropdown_info_txt">
                                         <h4 className="_nav_dropdown_title">

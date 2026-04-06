@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 interface Notification {
   id: number;
@@ -73,8 +74,8 @@ export const NotificationDropdown = ({ isOpen }: { isOpen: boolean }) => {
         <div className="_notifications_all">
           {notifications.map((item) => (
             <div className="_notification_box" key={item.id}>
-              <div className="_notification_image">
-                <img src={item.image} alt="Image" className="_notify_img" />
+              <div className="_notification_image" style={{ position: "relative", width: "48px", height: "48px", borderRadius: "50%", overflow: "hidden" }}>
+                <Image src={item.image} alt="Image" className="_notify_img" fill style={{ objectFit: "cover" }} />
               </div>
               <div className="_notification_txt">
                 <p className="_notification_para">
