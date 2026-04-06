@@ -18,7 +18,6 @@ export const sequelize = new Sequelize<PostgresDialect>({
   retry: {
     max: 3,
   },
-  // For development environment disable ssl
   ssl: {
     rejectUnauthorized: true,
     ca: CA_CERT,
