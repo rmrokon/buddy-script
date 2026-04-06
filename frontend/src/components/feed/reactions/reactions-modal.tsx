@@ -6,7 +6,6 @@ import { useGetInfiniteReactions } from "@/hooks/use-reactions";
 import { EReactableType } from "@/types/reaction";
 import { REACTION_ICONS } from "@/constants/reactions";
 import { getRandomAvatar } from "@/utils/avatar-utils";
-import Link from "next/link";
 
 interface ReactionsModalProps {
     reactableId: string;
