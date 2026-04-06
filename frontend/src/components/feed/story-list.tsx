@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 export const StoryList = () => {
     return (
@@ -18,7 +19,7 @@ export const StoryList = () => {
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-4 col">
                         <div className="_feed_inner_profile_story _b_radious6 ">
                             <div className="_feed_inner_profile_story_image">
-                                <img src="/assets/images/card_ppl1.png" alt="Image" className="_profile_story_img" />
+                                <Image src="/assets/images/card_ppl1.png" alt="Image" className="_profile_story_img" width={200} height={250} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                 <div className="_feed_inner_story_txt">
                                     <div className="_feed_inner_story_btn">
                                         <button className="_feed_inner_story_btn_link">
@@ -35,12 +36,12 @@ export const StoryList = () => {
                     <div className="col-xl-3 col-lg-3 col-md-4 col-sm-4 col">
                         <div className="_feed_inner_public_story _b_radious6">
                             <div className="_feed_inner_public_story_image">
-                                <img src="/assets/images/card_ppl2.png" alt="Image" className="_public_story_img" />
+                                <Image src="/assets/images/card_ppl2.png" alt="Image" className="_public_story_img" width={200} height={250} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                 <div className="_feed_inner_pulic_story_txt">
                                     <p className="_feed_inner_pulic_story_para">Ryan Roslansky</p>
                                 </div>
                                 <div className="_feed_inner_public_mini">
-                                    <img src="/assets/images/mini_pic.png" alt="Image" className="_public_mini_img" />
+                                    <Image src="/assets/images/mini_pic.png" alt="Image" className="_public_mini_img" width={40} height={40} />
                                 </div>
                             </div>
                         </div>
@@ -55,7 +56,7 @@ export const StoryList = () => {
                     <ul className="_feed_inner_ppl_card_area_list">
                         <li className="_feed_inner_ppl_card_area_item">
                             <div className="_feed_inner_ppl_card_area_story">
-                                <img src="/assets/images/mobile_story_img.png" alt="Image" className="_card_story_img" />
+                                <Image src="/assets/images/mobile_story_img.png" alt="Image" className="_card_story_img" width={80} height={100} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                 <div className="_feed_inner_ppl_btn">
                                     <button className="_feed_inner_ppl_btn_link" type="button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 12 12">

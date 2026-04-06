@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { IComment } from "@/types/comment";
 import { getRandomAvatar } from "@/utils/avatar-utils";
 import { formatDistanceToNow } from "date-fns";
@@ -35,12 +36,17 @@ export const CommentItem = ({ comment, isReply = false }: CommentItemProps) => {
     return (
         <div className={`d-flex align-items-start gap-2 ${isReply ? "mt-2 ms-4" : "mt-3 px-3"}`}>
             {/* Avatar */}
-            <img
-                src={comment.user?.profilePic || getRandomAvatar(comment.userId)}
-                alt={comment.user?.firstName}
+            <div
                 className="rounded-circle flex-shrink-0"
-                style={{ width: isReply ? "26px" : "32px", height: isReply ? "26px" : "32px", objectFit: "cover" }}
-            />
+                style={{ width: isReply ? "26px" : "32px", height: isReply ? "26px" : "32px", position: "relative", overflow: "hidden" }}
+            >
+                <Image
+                    src={comment.user?.profilePic || getRandomAvatar(comment.userId)}
+                    alt={comment.user?.firstName ?? "User"}
+                    fill
+                    style={{ objectFit: "cover" }}
+                />
+            </div>
 
             {/* Content column */}
             <div className="flex-grow-1 min-w-0">

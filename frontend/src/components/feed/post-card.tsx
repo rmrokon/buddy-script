@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { IPost, IPreviewComment } from "@/types/post";
 import { getRandomAvatar } from "@/utils/avatar-utils";
 import { formatDistanceToNow } from "date-fns";
@@ -73,8 +74,8 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
             <div className="_feed_inner_timeline_content _padd_r24 _padd_l24">
                 <div className="_feed_inner_timeline_post_top">
                     <div className="_feed_inner_timeline_post_box">
-                        <div className="_feed_inner_timeline_post_box_image">
-                            <img src={displayData.userImage} alt="" className="_post_img" />
+                        <div className="_feed_inner_timeline_post_box_image" style={{ position: "relative", overflow: "hidden" }}>
+                            <Image src={displayData.userImage} alt="" className="_post_img" fill style={{ objectFit: "cover" }} />
                         </div>
                         <div className="_feed_inner_timeline_post_box_txt">
                             <h4 className="_feed_inner_timeline_post_box_title">{displayData.userName}</h4>
@@ -113,8 +114,8 @@ export const PostCard = ({ post, mockData }: PostCardProps) => {
                 </div>
                 <h4 className="_feed_inner_timeline_post_title">{displayData.content}</h4>
                 {displayData.image && (
-                    <div className="_feed_inner_timeline_image">
-                        <img src={displayData.image} alt="" className="_time_img" />
+                    <div className="_feed_inner_timeline_image" style={{ position: "relative" }}>
+                        <Image src={displayData.image!} alt="" className="_time_img" width={500} height={500} style={{ objectFit: "cover" }} />
                     </div>
                 )}
             </div>

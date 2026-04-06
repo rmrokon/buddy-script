@@ -45,8 +45,8 @@ export const ReactionButton = ({
         <div className="position-relative d-inline-block">
             {/* Reaction Picker Popup */}
             {isPickerOpen && (
-                <div className="position-absolute bg-white shadow-sm p-2 rounded-pill d-flex gap-2"
-                    style={{ bottom: "100%", left: 0, zIndex: 100, marginBottom: "10px" }}
+                <div className="position-absolute bg-white shadow-sm px-2 rounded-pill d-flex gap-2"
+                    style={{ bottom: "100%", left: 0, zIndex: 100 }}
                     onMouseLeave={() => setIsPickerOpen(false)}>
                     {(Object.keys(REACTION_ICONS) as EReactionType[]).map((type) => (
                         <div

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -64,7 +65,7 @@ export const CreatePost = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="_feed_inner_text_area _b_radious6 _padd_b24 _padd_t24 _padd_r24 _padd_l24 _mar_b16">
             <div className="_feed_inner_text_area_box">
                 <div className="_feed_inner_text_area_box_image">
-                    <img src="/assets/images/txt_img.png" alt="Image" className="_txt_img" />
+                    <Image src="/assets/images/txt_img.png" alt="Image" className="_txt_img" width={40} height={40} />
                 </div>
                 <div className="form-floating _feed_inner_text_area_box_form">
                     <textarea
@@ -85,7 +86,7 @@ export const CreatePost = () => {
 
             {previewUrl && (
                 <div className="position-relative mt-3 _b_radious6 overflow-hidden" style={{ maxWidth: "200px" }}>
-                    <img src={previewUrl} alt="Preview" className="img-fluid rounded" />
+                    <Image src={previewUrl!} alt="Preview" className="img-fluid rounded" width={200} height={200} unoptimized style={{ objectFit: "contain", width: "100%", height: "auto" }} />
                     <button
                         type="button"
                         className="btn btn-danger btn-sm position-absolute top-0 end-0 m-1 rounded-circle d-flex align-items-center justify-content-center"

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useGetInfiniteReactions } from "@/hooks/use-reactions";
 import { EReactableType } from "@/types/reaction";
 import { REACTION_ICONS } from "@/constants/reactions";
@@ -91,11 +92,12 @@ export const ReactionsModal = ({ reactableId, reactableType = EReactableType.POS
                             {allReactions.map((reaction) => (
                                 <li key={reaction.id} className="d-flex align-items-center justify-content-between mb-3">
                                     <div className="d-flex align-items-center">
-                                        <div className="_feed_inner_timeline_post_box_image me-3" style={{ width: "40px", height: "40px" }}>
-                                            <img
+                                        <div className="_feed_inner_timeline_post_box_image me-3" style={{ width: "40px", height: "40px", position: "relative", borderRadius: "50%", overflow: "hidden" }}>
+                                            <Image
                                                 src={reaction.user.profilePic || getRandomAvatar(reaction.userId)}
-                                                alt={reaction.user.firstName}
-                                                className="rounded-circle w-100 h-100 object-fit-cover"
+                                                alt={reaction.user.firstName ?? "User"}
+                                                fill
+                                                style={{ objectFit: "cover" }}
                                             />
                                         </div>
                                         <div>

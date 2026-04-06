@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { useAuthStore } from "@/store/use-auth-store";
 import { getRandomAvatar } from "@/utils/avatar-utils";
 import { useCreateComment } from "@/hooks/use-comments";
@@ -51,11 +52,12 @@ export const CommentInput = ({
 
     return (
         <div className="d-flex align-items-start _mar_b16">
-            <div className="_feed_inner_timeline_post_box_image me-2" style={{ width: "32px", height: "32px" }}>
-                <img 
+            <div className="_feed_inner_timeline_post_box_image me-2" style={{ width: "32px", height: "32px", position: "relative", borderRadius: "50%", overflow: "hidden" }}>
+                <Image 
                     src={user?.profilePic || getRandomAvatar(user?.id)} 
                     alt="User" 
-                    className="rounded-circle w-100 h-100 object-fit-cover"
+                    fill
+                    style={{ objectFit: "cover" }}
                 />
             </div>
             <form className="flex-grow-1" onSubmit={handleSubmit}>
